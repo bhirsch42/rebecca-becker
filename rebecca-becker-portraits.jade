@@ -1,0 +1,52 @@
+head
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  title Walking in Circles
+body
+
+template(name='home')
+  +content
+
+template(name='content')
+  .text-center
+    +header
+  .row
+    .col.col-sm-6
+      +about_the_artist
+    .col.col-sm-6.text-center
+      img(src='http://placehold.it/325x500')
+  .row
+    .col.col-md-12
+      h1.text-center Pricing
+      hr
+  .row
+    .col.col-sm-6
+      +oil_prices
+    .col.col-sm-6
+      +pastel_prices
+
+template(name='oil_prices')
+  h3.text-center Oil Prices
+  each prices
+    .price
+      .product #{product}
+      .price #{price}
+
+template(name='pastel_prices')
+  h3.text-center Pastel Prices
+  each prices
+    .price
+      .product #{product}
+      .price #{price}
+
+template(name='header')
+  .header
+    .clean PORTRAITS BY
+    .cursive Rebecca Becker
+
+
+template(name='about_the_artist')
+  .about-the-artist
+  h1.text-center About the Artist
+  hr
+  .big-read
+    {{ dict 'site.about_the_artist' 'No description' }}
