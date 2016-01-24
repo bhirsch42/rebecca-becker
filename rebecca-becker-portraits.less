@@ -21,6 +21,9 @@ h2 {
   font-family: 'Lato';
   font-weight: 300;
   font-size: 24px;
+  @media screen and (max-width: 800px) {
+    font-size: 20px;
+  }
 }
 
 h3 {
@@ -38,6 +41,83 @@ hr {
   }
 
 }
+
+
+.side-nav-wrapper {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  @media screen and (max-width: 800px) {
+    transition: left .4s ease;
+    left: -150px;
+
+    &.open {
+      left: 0px;
+    }
+  }
+
+  background-image: url('/res/seamless_paper_texture.png');
+
+  width: 150px;
+  height: 100vh;
+
+  border-right: 1px dashed @light;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    font-family: 'Lato';
+    font-weight: 100;
+    @media screen and (max-width: 800px) {
+      font-weight: 300;
+    }
+    font-size: 24px;
+    padding: 0px;
+    height: 100vh
+  }
+
+  a {
+    color: @dark;
+    &:hover {
+      text-decoration: none;
+      border-bottom: 2px solid @light;
+    }
+  }
+}
+
+.nav-button {
+  z-index: 9999;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  bottom: 15px;
+  right: 15px;
+  font-size: 24px;
+  border-radius: 100%;
+  background-color: rgba(0,0,0,.5);
+  color: white;
+
+  width: 50px;
+  height: 50px;
+}
+
+
+.content {
+  margin-left: 150px;
+
+  @media screen and (max-width: 800px) {
+    margin-left: 0;
+  }
+
+}
+
 
 .bio-img-wrapper {
   display: flex;
@@ -80,6 +160,21 @@ hr {
     font-family: 'Pinyon Script';
     font-size: 72px;
   }
+
+  @media screen and (max-width: 450px) {
+    .clean {
+      white-space: nowrap;
+      font-size: 18px;
+      letter-spacing: 18px;
+      font-weight: 300;
+    }
+    .cursive {
+      white-space: nowrap;
+      font-size: 56px;
+    }
+  }
+
+
 }
 
 // .price {
@@ -173,8 +268,14 @@ ul.price {
     font-family: 'Lato';
     font-weight: 400;
     font-size: 20px;
+
+    @media screen and (max-width: 600px) {
+      font-size: 16px;
+    }
+
     li {
       margin: 15px;
+      margin-left: 0;
 
       span {
         cursor: pointer;
@@ -206,43 +307,4 @@ ul.price {
 
   }
 
-}
-
-.side-nav-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  background-image: url('/res/seamless_paper_texture.png');
-
-  width: 150px;
-  height: 100vh;
-
-  border-right: 1px dashed @light;
-
-  ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    list-style: none;
-    font-family: 'Lato';
-    font-weight: 100;
-    font-size: 24px;
-    padding: 0px;
-    height: 100vh
-  }
-
-  a {
-    color: @dark;
-    &:hover {
-      text-decoration: none;
-      border-bottom: 2px solid @light;
-    }
-  }
-
-}
-
-.content {
-  margin-left: 150px;
 }

@@ -1,4 +1,9 @@
 if Meteor.isClient
+  Template.nav.events
+    'click .nav-button': ->
+      console.log 'click'
+      $('.side-nav-wrapper').toggleClass 'open'
+
   Template.oil_prices.helpers
     'prices': -> OilPrices.find({})
 

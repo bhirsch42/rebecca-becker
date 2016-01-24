@@ -1,5 +1,5 @@
 head
-  meta(name='viewport' content='width=device-width, initial-scale=1')
+  meta(name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
   title Portraits by Rebecca Becker
 body
 
@@ -9,6 +9,8 @@ template(name='home')
     +content
 
 template(name='nav')
+  .nav-button
+    i.fa.fa-bars
   .side-nav-wrapper
     ul.side-nav
       li
@@ -57,10 +59,12 @@ template(name='content')
       h2.text-center Rebecca Becker, Atlanta Portrait Artist
   .row
     .col.col-md-12
-      h2.text-center Telephone: (404) 367-1006
+      h2.text-center Telephone:
+        a(href='tel:404-367-1006') (404) 367-1006
   .row
     .col.col-md-12
-      h2.text-center Email: info@portraitsbyrebeccabecker.com
+      h2.text-center Email:
+        a(href='mailto:info@portraitsbyrebeccabecker.com') info@portraitsbyrebeccabecker.com
   .row
     .col.col-md-12
       hr.dashed
