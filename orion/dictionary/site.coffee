@@ -43,3 +43,42 @@ PastelPrices.attachSchema new SimpleSchema
     type: String
   price:
     type: String
+
+@Testimonials = new orion.collection 'testimonials',
+  singularName: 'testimonial'
+  pluralName: 'testimonials'
+  title: 'Testimonials'
+  link:
+    title: 'Testimonials'
+
+  tabular:
+    columns: [
+      {data: 'quote', title: 'Quote'},
+      {data: 'author', title: 'Author'},
+    ]
+
+
+Testimonials.attachSchema new SimpleSchema
+  quote:
+    type: String
+  author:
+    type: String
+
+@Portraits = new orion.collection 'portraits',
+  singularName: 'portrait'
+  pluralName: 'portraits'
+  title: 'Portraits'
+  link:
+    title: 'Gallery'
+
+  tabular:
+    columns: [
+      {data: 'category', title: 'Category'}
+      orion.attributeColumn 'image', 'image', 'Image'
+    ]
+
+Portraits.attachSchema new SimpleSchema
+  category:
+    type: String
+  image: orion.attribute 'image',
+    label: 'Image'

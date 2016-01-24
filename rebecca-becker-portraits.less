@@ -8,12 +8,19 @@
 
 body {
   background-image: url('/res/seamless_paper_texture.png');
+  overflow-x: hidden;
 }
 
 h1 {
   font-family: 'Lato';
   font-weight: 300;
   font-size: 36px;
+}
+
+h2 {
+  font-family: 'Lato';
+  font-weight: 300;
+  font-size: 24px;
 }
 
 h3 {
@@ -25,6 +32,28 @@ h3 {
 
 hr {
   border-color: @lighter;
+
+  &.dashed {
+    border-style: dashed;
+  }
+
+}
+
+.bio-img-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bio-img {
+  background-image: url('/res/rebecca.jpg');
+  background-size: cover;
+  background-position: center center;
+  width: 300px;
+  height: 300px;
+  border-radius: 100%;
+  overflow: hidden;
+  margin-top: 30px;
 }
 
 .col {
@@ -39,6 +68,7 @@ hr {
 }
 
 .header {
+  margin-top: 15px;
   .clean {
     font-family: 'Lato';
     font-weight: 100;
@@ -52,10 +82,167 @@ hr {
   }
 }
 
-.price {
-  font-family: 'Lato';
-  font-weight: 300;
-  font-size: 16px;
+// .price {
+//   font-family: 'Lato';
+//   font-weight: 300;
+//   font-size: 16px;
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+ul.price {
+  max-width: 40em;
+  padding: 0;
+  overflow-x: hidden;
+  list-style: none;
+
+  li:before {
+    float: left;
+    width: 0;
+    white-space: nowrap;
+    content: ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+  }
+
+  span:first-child {
+    padding-right: 0.33em;
+    background-image: url('/res/seamless_paper_texture.png');
+  }
+
+  span + span {
+    float: right;
+    padding-left: 0.33em;
+    background-image: url('/res/seamless_paper_texture.png');
+  }
+}
+
+.testimonials {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  .testimonial-wrapper {
+    padding: 30px;
+  }
+
+  .testimonial {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    border: 1px dashed @lighter;
+  }
+
+  .quote {
+    font-family: 'Merriweather';
+    font-style: italic;
+    font-weight: 300;
+    font-size: 18;
+
+    &:before, &:after {
+      content: '"'
+    }
+  }
+
+  .author {
+    position: absolute;
+    bottom: -12px;
+    right: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    font-family: 'Lato';
+    font-weight: 300;
+    font-size: 18px;
+    background-image: url('/res/seamless_paper_texture.png');
+  }
+}
+
+.gallery {
+  background-color: rgba(0,0,0,.25);
+
+  .gallery-nav {
+    display: flex;
+
+    margin-bottom: 0;
+
+    list-style: none;
+    font-family: 'Lato';
+    font-weight: 400;
+    font-size: 20px;
+    li {
+      margin: 15px;
+
+      span {
+        cursor: pointer;
+      }
+
+      &:hover, &.selected {
+        span {
+          border-bottom: 2px solid @light;
+        }
+      }
+
+    }
+
+  }
+
+  .portraits-wrapper {
+    overflow-y: scroll;
+  }
+
+  .portraits {
+    display: flex;
+    height: 300px;
+    .portrait {
+      height: 100%;
+      img {
+        height: 100%;
+      }
+    }
+
+  }
+
+}
+
+.side-nav-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background-image: url('/res/seamless_paper_texture.png');
+
+  width: 150px;
+  height: 100vh;
+
+  border-right: 1px dashed @light;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    font-family: 'Lato';
+    font-weight: 100;
+    font-size: 24px;
+    padding: 0px;
+    height: 100vh
+  }
+
+  a {
+    color: @dark;
+    &:hover {
+      text-decoration: none;
+      border-bottom: 2px solid @light;
+    }
+  }
+
+}
+
+.content {
+  margin-left: 150px;
 }

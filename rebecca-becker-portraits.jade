@@ -1,21 +1,39 @@
 head
   meta(name='viewport' content='width=device-width, initial-scale=1')
-  title Walking in Circles
+  title Portraits by Rebecca Becker
 body
 
 template(name='home')
-  +content
+  +nav
+  .content
+    +content
+
+template(name='nav')
+  .side-nav-wrapper
+    ul.side-nav
+      li
+        a(href='#gallery') Gallery
+      li
+        a(href='#about') About
+      li
+        a(href='#pricing') Pricing
+      li
+        a(href='#testimonials') Testimonials
+      li
+        a(href='#contact') Contact
+
 
 template(name='content')
   .text-center
     +header
-  .row
+  +gallery
+  .row#about
+    .col.col-sm-6.bio-img-wrapper
+      .bio-img
     .col.col-sm-6
       +about_the_artist
-    .col.col-sm-6.text-center
-      img(src='http://placehold.it/325x500')
   .row
-    .col.col-md-12
+    .col.col-md-12#pricing
       h1.text-center Pricing
       hr
   .row
@@ -23,20 +41,50 @@ template(name='content')
       +oil_prices
     .col.col-sm-6
       +pastel_prices
+  .row#testimonials
+    .col.col-md-12
+      h1.text-center Testimonials
+      hr
+  .row
+    .col-md-12
+      +testimonials
+  .row#contact
+    .col.col-md-12
+      h1.text-center Contact
+      hr
+  .row
+    .col.col-md-12
+      h2.text-center Rebecca Becker, Atlanta Portrait Artist
+  .row
+    .col.col-md-12
+      h2.text-center Telephone: (404) 367-1006
+  .row
+    .col.col-md-12
+      h2.text-center Email: info@portraitsbyrebeccabecker.com
+  .row
+    .col.col-md-12
+      hr.dashed
+  .row
+    .col.col-md-12.text-center
+      .small Copyright 2009-2011 © Portraits by Rebecca Becker. All Rights Reserved.
+      br
+
 
 template(name='oil_prices')
   h3.text-center Oil Prices
   each prices
-    .price
-      .product #{product}
-      .price #{price}
+    ul.price
+      li
+        span.product #{product}
+        span.price #{price}
 
 template(name='pastel_prices')
   h3.text-center Pastel Prices
   each prices
-    .price
-      .product #{product}
-      .price #{price}
+    ul.price
+      li
+        span.product #{product}
+        span.price #{price}
 
 template(name='header')
   .header
@@ -50,3 +98,39 @@ template(name='about_the_artist')
   hr
   .big-read
     {{ dict 'site.about_the_artist' 'No description' }}
+
+template(name='testimonials')
+  .testimonials
+    each testimonials
+      .testimonial-wrapper
+        .testimonial
+          .quote #{quote}
+          .author #{author}
+
+template(name='gallery')
+  .gallery#gallery
+    .row
+      .col-md-12
+        ul.gallery-nav
+          each categories_first
+            li.selected
+              span.category(data-category=category) #{category}
+          each categories_rest
+            li
+              span.category(data-category=category) #{category}
+    .portraits-wrapper
+      .row
+        .col-md-12.portraits#top
+          each portraits_top
+            .portrait
+              img(src=image.url)
+      .row
+        .col-md-12.portraits#bottom
+          each portraits_bottom
+            .portrait
+              img(src=image.url)
+
+template(name='portraits')
+  each portraits
+    .portrait
+      img(src=image.url)

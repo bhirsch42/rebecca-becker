@@ -28,3 +28,6 @@ coffeescript
 orionjs:summernote
 flemay:less-autoprefixer
 mquandalle:jade
+orionjs:image-attribute
+orionjs:filesystem
+orionjs:s3
