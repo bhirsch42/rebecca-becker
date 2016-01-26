@@ -118,10 +118,10 @@ template(name='gallery')
         ul.gallery-nav
           each categories_first
             li.selected
-              span.category(data-category=category) #{category}
+              span.category(data-category=this) #{this}
           each categories_rest
             li
-              span.category(data-category=category) #{category}
+              span.category(data-category=this) #{this}
     .portraits-wrapper
       .row
         .col-md-12.portraits#top

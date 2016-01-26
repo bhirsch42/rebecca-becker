@@ -31,3 +31,4 @@ mquandalle:jade
 orionjs:image-attribute
 orionjs:filesystem
 orionjs:s3
+reactive-var

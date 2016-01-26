@@ -1,4 +1,14 @@
 if Meteor.isClient
+
+  @categories = null
+  @categories = ->
+    if categories
+      return categories
+    categories = {}
+    Portraits.find({}).forEach (portrait) ->
+      categories[portrait.category] = 1
+    categories = (key for key of categories)
+
   Template.nav.onRendered ->
     $('.nav-button').click ->
       $('.side-nav-wrapper').toggleClass 'open'
@@ -14,24 +24,15 @@ if Meteor.isClient
 
   Template.gallery.helpers
     'categories_first': ->
-      categories = {}
-      Portraits.find({}).forEach (portrait) ->
-        categories[portrait.category] = 1
-      return ({category: key} for key of categories).splice(0, 1)
+      categories().slice(0, 1)
 
     'categories_rest': ->
-      categories = {}
-      Portraits.find({}).forEach (portrait) ->
-        categories[portrait.category] = 1
-      return ({category: key} for key of categories).splice(1)
+      console.log 'categories()', categories()
+      console.log 'categories().slice(1)', categories().slice(1)
+      categories().slice(1)
 
     'portraits_top': ->
-      categories = {}
-      Portraits.find({}).forEach (portrait) ->
-        categories[portrait.category] = 1
-      category = ({category: key} for key of categories)[0].category
-      console.log 'category', category
-      portraits = Portraits.find {category: category}
+      portraits = Portraits.find {category: categories()[0]}
       splitPortraits = {top: [], bottom: []}
       topWidth = 0
       bottomWidth = 0
@@ -45,12 +46,7 @@ if Meteor.isClient
       return splitPortraits.top
 
     'portraits_bottom': ->
-      categories = {}
-      Portraits.find({}).forEach (portrait) ->
-        categories[portrait.category] = 1
-      category = ({category: key} for key of categories)[0].category
-
-      portraits = Portraits.find {category: category}
+      portraits = Portraits.find {category: categories()[0]}
       splitPortraits = {top: [], bottom: []}
       topWidth = 0
       bottomWidth = 0
