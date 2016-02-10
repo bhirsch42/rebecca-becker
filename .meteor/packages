@@ -32,3 +32,6 @@ orionjs:image-attribute
 orionjs:filesystem
 orionjs:s3
 reactive-var
+okgrow:analytics
+spiderable
+mrt:fancybox

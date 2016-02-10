@@ -85,3 +85,4 @@ if Meteor.isClient
 
       Blaze.renderWithData Template.portraits, portraits: splitPortraits.top, $('#top')[0]
       Blaze.renderWithData Template.portraits, portraits: splitPortraits.bottom, $('#bottom')[0]
+      $(".fancybox").fancybox()

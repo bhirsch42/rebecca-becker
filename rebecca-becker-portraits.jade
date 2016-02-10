@@ -5,7 +5,7 @@ body
 
 template(name='home')
   +nav
-  .content
+  .user-content
     +content
 
 template(name='nav')
@@ -127,14 +127,17 @@ template(name='gallery')
         .col-md-12.portraits#top
           each portraits_top
             .portrait
-              img(src=image.url)
+              a.fancybox(href=image.url rel="gallery")
+                img(src=image.url)
       .row
         .col-md-12.portraits#bottom
           each portraits_bottom
             .portrait
-              img(src=image.url)
+              a.fancybox(href=image.url rel="gallery")
+                img(src=image.url)
 
 template(name='portraits')
   each portraits
     .portrait
-      img(src=image.url)
+      a.fancybox(href=image.url rel="gallery")
+        img(src=image.url)
