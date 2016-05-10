@@ -3,8 +3,11 @@ head
   title Portraits by Rebecca Becker
 body
 
-template(name='home')
+template(name='layout1')
   +nav
+  +Template.dynamic template=main
+
+template(name='home')
   .user-content
     +content
 
@@ -28,12 +31,15 @@ template(name='nav')
 template(name='content')
   .text-center
     +header
-  +gallery
+  +gallery_launcher
   .row#about
     .col.col-sm-6.bio-img-wrapper
       .bio-img
     .col.col-sm-6
       +about_the_artist
+  .row
+    .col.col-md-12
+      +portrait_process
   .row
     .col.col-md-12#pricing
       h1.text-center Pricing
@@ -92,7 +98,6 @@ template(name='pastel_prices')
 
 template(name='header')
   .header
-    .clean PORTRAITS BY
     .cursive Rebecca Becker
 
 
@@ -103,13 +108,39 @@ template(name='about_the_artist')
   .big-read
     {{ dict 'site.about_the_artist' 'No description' }}
 
+template(name='portrait_process')
+  .portrait-process
+    h1.text-center Portrait Process
+    hr
+    .big-read
+      {{ dict 'site.portrait_process' 'No descripion' }}
+
 template(name='testimonials')
   .testimonials
-    each testimonials
+    each testimonials_first
       .testimonial-wrapper
         .testimonial
           .quote #{quote}
           .author #{author}
+  .expandable-wrapper
+    .testimonials.expandable
+      each testimonials_rest
+        .testimonial-wrapper
+          .testimonial
+            .quote #{quote}
+            .author #{author}
+  h3#more-testimonials See more testimonials...
+  h3#fewer-testimonials See fewer testimonials...
+
+template(name='gallery_launcher')
+  .gallery-launcher
+    each categories
+      a.category(href='/gallery/{{{galleryLink}}}')
+        .image
+          img(src="{{c.url cloudinaryId gravity='face:center' width=500 height=500 crop='fill'}}")
+        .category-name-wrapper
+          .category-name= category
+
 
 template(name='gallery')
   .gallery#gallery
@@ -141,3 +172,42 @@ template(name='portraits')
     .portrait
       a.fancybox(href=image.url rel="gallery")
         img(src=image.url)
+
+template(name='photoswipe')
+  // Root element of PhotoSwipe. Must have class pswp.
+  .pswp(tabindex='-1', role='dialog', aria-hidden='true')
+    //
+      Background of PhotoSwipe.
+      It's a separate element as animating opacity is faster than rgba().
+    .pswp__bg
+    // Slides wrapper with overflow:hidden.
+    .pswp__scroll-wrap
+      //
+        Container that holds slides.
+        PhotoSwipe keeps only 3 of them in the DOM to save memory.
+        Don't modify these 3 pswp__item elements, data is added later on.
+      .pswp__container
+        .pswp__item
+        .pswp__item
+        .pswp__item
+      // Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed.
+      .pswp__ui.pswp__ui--hidden
+        .pswp__top-bar
+          // Controls are self-explanatory. Order can be changed.
+          .pswp__counter
+          button.pswp__button.pswp__button--close(title='Close (Esc)')
+          button.pswp__button.pswp__button--share(title='Share')
+          button.pswp__button.pswp__button--fs(title='Toggle fullscreen')
+          button.pswp__button.pswp__button--zoom(title='Zoom in/out')
+          // Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR
+          // element will get class pswp__preloader--active when preloader is running
+          .pswp__preloader
+            .pswp__preloader__icn
+              .pswp__preloader__cut
+                .pswp__preloader__donut
+        .pswp__share-modal.pswp__share-modal--hidden.pswp__single-tap
+          .pswp__share-tooltip
+        button.pswp__button.pswp__button--arrow--left(title='Previous (arrow left)')
+        button.pswp__button.pswp__button--arrow--right(title='Next (arrow right)')
+        .pswp__caption
+          .pswp__caption__center

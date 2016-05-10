@@ -1,5 +1,4 @@
 if Meteor.isClient
-
   @categories = null
   @categories = ->
     if categories
@@ -20,7 +19,17 @@ if Meteor.isClient
     'prices': -> PastelPrices.find({})
 
   Template.testimonials.helpers
-    'testimonials': -> Testimonials.find({})
+    'testimonials_first': -> Testimonials.find({}).fetch()[..2]
+    'testimonials_rest': -> Testimonials.find({}).fetch()[3..]
+
+  Template.gallery_launcher.helpers
+    'categories': ->
+      categories().map (category) ->
+        {
+          category: category
+          cloudinaryId: Meteor.settings.public.cloudinary.folder + '/' + Portraits.findOne(category: category).image.url.split('/')[-1..][0].split('.')[0]
+          galleryLink: _.escape(category).replace('/', '|||')
+        }
 
   Template.gallery.helpers
     'categories_first': ->
@@ -86,3 +95,48 @@ if Meteor.isClient
       Blaze.renderWithData Template.portraits, portraits: splitPortraits.top, $('#top')[0]
       Blaze.renderWithData Template.portraits, portraits: splitPortraits.bottom, $('#bottom')[0]
       $(".fancybox").fancybox()
+
+  Template.testimonials.events
+    'click #more-testimonials': (e) ->
+      $('#more-testimonials').hide()
+      $('#fewer-testimonials').show()
+      $expandable = $('.expandable-wrapper')
+      $expandableChild = $expandable.find '.expandable'
+      $expandable.velocity
+        height: $expandableChild.height()
+      ,
+        duration: 400
+
+    'click #fewer-testimonials': (e) ->
+      $('#fewer-testimonials').hide()
+      $('#more-testimonials').show()
+      $expandable = $('.expandable-wrapper')
+      $expandableChild = $expandable.find '.expandable'
+      $expandable.velocity
+        height: 0
+      ,
+        duration: 400
+
+  # Template.testimonials.rendered = ->
+  #   $('.testimonials').masonry({itemSelector: '.testimonial-wrapper', columnWidth: 400})
+
+  Template.photoswipe.rendered = ->
+    pswpElement = document.querySelectorAll('.pswp')[0]
+    # build items array
+    items = [
+      {
+        src: 'https://placekitten.com/600/400'
+        w: 600
+        h: 400
+      }
+      {
+        src: 'https://placekitten.com/1200/900'
+        w: 1200
+        h: 900
+      }
+    ]
+    # define options (if needed)
+    options = index: 0
+    # Initializes and opens PhotoSwipe
+    gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options)
+    gallery.init()

@@ -4,6 +4,12 @@ orion.dictionary.addDefinition 'about_the_artist', 'site',
   autoform:
     type: 'textarea'
 
+orion.dictionary.addDefinition 'portrait_process', 'site',
+  type: String
+  label: 'Portrait Process'
+  autoform:
+    type: 'textarea'
+
 @OilPrices = new orion.collection 'oil_prices',
   singularName: 'custom oil portrait price'
   pluralName: 'custom oil portrait prices'

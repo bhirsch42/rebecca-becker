@@ -6,8 +6,16 @@
 
 FlowRouter.route '/',
   action: ->
-    $('body').empty()
-    Blaze.render Template.home, $('body')[0]
-    $(".fancybox").fancybox()
+    BlazeLayout.render 'layout1', main: 'home'
+    # $('body').empty()
+    # Blaze.render Template.home, $('body')[0]
+    # $(".fancybox").fancybox()
   # action: -> show Template.home
 
+FlowRouter.route '/gallery/:category',
+  action: (params, queryParams) ->
+    category = _.unescape(params.category).replace('|||', '/')
+    console.log category
+
+if Meteor.isClient
+  BlazeLayout.setRoot 'body'
