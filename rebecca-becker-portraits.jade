@@ -5,11 +5,11 @@ body
 
 template(name='layout1')
   +nav
-  +Template.dynamic template=main
+  .user-content
+    +Template.dynamic template=main
 
 template(name='home')
-  .user-content
-    +content
+  +content
 
 template(name='nav')
   .nav-button
@@ -17,15 +17,17 @@ template(name='nav')
   .side-nav-wrapper
     ul.side-nav
       li
-        a(href='#gallery') Gallery
+        a(href='/') Home
+      li.gallery-link
+        a(href='/gallery/all') Gallery
       li
-        a(href='#about') About
+        a(href='/#about') About
       li
-        a(href='#pricing') Pricing
+        a(href='/#pricing') Pricing
       li
-        a(href='#testimonials') Testimonials
+        a(href='/#testimonials') Testimonials
       li
-        a(href='#contact') Contact
+        a(href='/#contact') Contact
 
 
 template(name='content')
@@ -143,35 +145,21 @@ template(name='gallery_launcher')
 
 
 template(name='gallery')
-  .gallery#gallery
-    .row
-      .col-md-12
-        ul.gallery-nav
-          each categories_first
-            li.selected
-              span.category(data-category=this) #{this}
-          each categories_rest
-            li
-              span.category(data-category=this) #{this}
-    .portraits-wrapper
-      .row
-        .col-md-12.portraits#top
-          each portraits_top
-            .portrait
-              a.fancybox(href=image.url rel="gallery")
-                img(src=image.url)
-      .row
-        .col-md-12.portraits#bottom
-          each portraits_bottom
-            .portrait
-              a.fancybox(href=image.url rel="gallery")
-                img(src=image.url)
+  .gallery-wrapper
+    h1.text-center Gallery
+    ul.gallery-nav
+      li(id=allSelected)
+        a(href='/gallery/all') All
+      each categories
+        li(id=selected)
+          a(href=galleryLink)= category
+    .gallery.grid
+      each portraits
+        +portrait(this)
 
-template(name='portraits')
-  each portraits
-    .portrait
-      a.fancybox(href=image.url rel="gallery")
-        img(src=image.url)
+template(name='portrait')
+  .portrait.grid-item(style="width: {{width}}px; height: {{height}}px;")
+    img(src="{{imageLink}}")
 
 template(name='photoswipe')
   // Root element of PhotoSwipe. Must have class pswp.

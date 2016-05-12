@@ -8,9 +8,25 @@ if Meteor.isClient
       categories[portrait.category] = 1
     categories = (key for key of categories)
 
+  @cloudinaryIdFromUrl = (url) ->
+    Meteor.settings.public.cloudinary.folder + '/' + url.split('/')[-1..][0].split('.')[0]
+
+  Template.content.onRendered ->
+    $(window).scrollTop 0
+    setTimeout ->
+      $(window.location.hash).velocity 'scroll',
+        duration: 1000
+        easing: 'ease-in-out'
+    , 400
+    console.log 'scrolltop boi'
+
   Template.nav.onRendered ->
     $('.nav-button').click ->
       $('.side-nav-wrapper').toggleClass 'open'
+
+  # Template.nav.events
+  #   'click a': (e) ->
+  #     e.preventDefault()
 
   Template.oil_prices.helpers
     'prices': -> OilPrices.find({})
@@ -27,74 +43,71 @@ if Meteor.isClient
       categories().map (category) ->
         {
           category: category
-          cloudinaryId: Meteor.settings.public.cloudinary.folder + '/' + Portraits.findOne(category: category).image.url.split('/')[-1..][0].split('.')[0]
+          cloudinaryId: cloudinaryIdFromUrl Portraits.findOne(category: category).image.url
           galleryLink: _.escape(category).replace('/', '|||')
         }
 
   Template.gallery.helpers
-    'categories_first': ->
-      categories().slice(0, 1)
+    'categories': ->
+      selectedCategory = _.unescape(FlowRouter.getParam('category')).replace('|||', '/')
+      categories().map (category) ->
+        {
+          category: category
+          galleryLink: _.escape(category).replace('/', '|||')
+          selected: if category == selectedCategory then 'selected' else ''
+        }
 
-    'categories_rest': ->
-      console.log 'categories()', categories()
-      console.log 'categories().slice(1)', categories().slice(1)
-      categories().slice(1)
-
-    'portraits_top': ->
-      portraits = Portraits.find {category: categories()[0]}
-      splitPortraits = {top: [], bottom: []}
-      topWidth = 0
-      bottomWidth = 0
-      portraits.forEach (p) ->
-        if topWidth > bottomWidth
-          bottomWidth += p.image.info.width / p.image.info.height
-          splitPortraits.bottom.push p
-        else
-          topWidth += p.image.info.width / p.image.info.height
-          splitPortraits.top.push p
-      return splitPortraits.top
-
-    'portraits_bottom': ->
-      portraits = Portraits.find {category: categories()[0]}
-      splitPortraits = {top: [], bottom: []}
-      topWidth = 0
-      bottomWidth = 0
-      portraits.forEach (p) ->
-        if topWidth > bottomWidth
-          bottomWidth += p.image.info.width / p.image.info.height
-          splitPortraits.bottom.push p
-        else
-          topWidth += p.image.info.width / p.image.info.height
-          splitPortraits.top.push p
-      return splitPortraits.bottom
+    'allSelected': ->
+      selectedCategory = _.unescape(FlowRouter.getParam('category')).replace('|||', '/')
+      return if selectedCategory == 'all' then 'selected' else ''
 
 
-  Template.gallery.events
-    'click span.category': (e) ->
-      $('.selected').removeClass 'selected'
-      $(e.target).closest('li').addClass 'selected'
-      category = $(e.target).data 'category'
-      portraits = Portraits.find {category: category}
+    'portraits': ->
+      category = _.unescape(FlowRouter.getParam('category')).replace('|||', '/')
+      width = 270
 
-      splitPortraits = {top: [], bottom: []}
+      cursor = Portraits.find(category: category)
+      cursor = Portraits.find({}) if cursor.count() == 0
+      cursor.map (portrait) ->
+        cloudinaryId = cloudinaryIdFromUrl portrait.image.url
+        ratio = width / portrait.image.info.width
+        # console.log cloudinaryId, width, portrait
+        {
+          width: width
+          height: portrait.image.info.height * ratio
+          imageLink: $.cloudinary.image(cloudinaryId, width: width, crop: 'scale')[0].src
+        }
 
-      topWidth = 0
-      bottomWidth = 0
+      # TESTING
+      # width = 270
+      # Portraits.find({}).map (portrait) ->
+      #   cloudinaryId = cloudinaryIdFromUrl portrait.image.url
+      #   ratio = width / portrait.image.info.width
+      #   # console.log cloudinaryId, width, portrait
+      #   {
+      #     width: width
+      #     height: portrait.image.info.height * ratio
+      #     imageLink: $.cloudinary.image(cloudinaryId, width: width, crop: 'scale')[0].src
+      #   }
 
-      portraits.forEach (p) ->
-        if topWidth > bottomWidth
-          bottomWidth += p.image.info.width / p.image.info.height
-          splitPortraits.bottom.push p
-        else
-          topWidth += p.image.info.width / p.image.info.height
-          splitPortraits.top.push p
+  @masonry = _.debounce ->
+    # $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
+    $('.grid').masonry 'destroy'
+    $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
+  , 20
 
-      $('#top').empty()
-      $('#bottom').empty()
+  # @masonry = ->
+  #   $('.grid').css 'width', '100%'
+  #   $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
+  #   console.log 'Masonry!'
 
-      Blaze.renderWithData Template.portraits, portraits: splitPortraits.top, $('#top')[0]
-      Blaze.renderWithData Template.portraits, portraits: splitPortraits.bottom, $('#bottom')[0]
-      $(".fancybox").fancybox()
+  # Template.gallery.onRendered ->
+  #   console.log 'masonry load'
+  #   $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
+
+  Template.portrait.onRendered ->
+    masonry()
+
 
   Template.testimonials.events
     'click #more-testimonials': (e) ->
