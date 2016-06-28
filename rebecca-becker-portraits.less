@@ -48,6 +48,10 @@ hr {
   padding: 15px;
 }
 
+.pswp {
+  z-index: 8999;
+}
+
 .side-nav-wrapper {
   z-index: 7999;
   position: fixed;
@@ -364,9 +368,20 @@ ul.price {
   }
 }
 
-* {
-  box-sizing: border-box;
+.gallery {
+  opacity: 0;
+
+  &.flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &.fadeIn {
+    transition: opacity 1s ease;
+    opacity: 1;
+  }
 }
+
 
 .grid {
   margin: 0 auto;

@@ -5,6 +5,11 @@ FlowRouter.route '/',
 FlowRouter.route '/gallery/:category',
   action: (params, queryParams) ->
     BlazeLayout.render 'layout1', main: 'gallery'
+    console.log 'flowaction'
+    $('.gallery').removeClass('fadeIn')
+    setTimeout ->
+      $('.gallery').addClass 'fadeIn'
+    , 400
 
 
 if Meteor.isClient

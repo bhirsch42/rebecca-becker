@@ -66,13 +66,15 @@ if Meteor.isClient
       category = _.unescape(FlowRouter.getParam('category')).replace('|||', '/')
       width = 270
 
-      cursor = Portraits.find(category: category)
-      cursor = Portraits.find({}) if cursor.count() == 0
+      cursor = Portraits.find({category: category}, {sort: {'order': 1}})
+      if cursor.count() == 0
+        cursor = Portraits.find({}, {sort: {'order' : 1}})
       cursor.map (portrait) ->
         cloudinaryId = cloudinaryIdFromUrl portrait.image.url
         ratio = width / portrait.image.info.width
         # console.log cloudinaryId, width, portrait
         {
+          cloudinaryId: cloudinaryId
           width: width
           height: portrait.image.info.height * ratio
           imageLink: $.cloudinary.image(cloudinaryId, width: width, crop: 'scale')[0].src
@@ -90,20 +92,51 @@ if Meteor.isClient
       #     imageLink: $.cloudinary.image(cloudinaryId, width: width, crop: 'scale')[0].src
       #   }
 
+  Template.gallery.onRendered ->
+    $('.gallery').addClass 'fadeIn'
+
+  Template.gallery.events
+    'click .portrait': (e) ->
+      width = 800
+
+      pswp = $('.pswp')[0]
+
+      category = _.unescape(FlowRouter.getParam('category')).replace('|||', '/')
+
+      console.log $(e.target).closest('.portrait').data('cloudinary-id')
+      imageId = $(e.target).closest('.portrait').data('cloudinary-id')
+
+      cursor = Portraits.find({category: category}, {sort: {'order': 1}})
+      cursor = Portraits.find({}, {sort: {'order': 1}}) if cursor.count() == 0
+
+      index = 0
+      indexFound = false
+      items = cursor.map (portrait) ->
+        cloudinaryId = cloudinaryIdFromUrl portrait.image.url
+        console.log index, cloudinaryId
+        if cloudinaryId == imageId
+          indexFound = true
+        if not indexFound
+          index += 1
+
+        ratio = width / portrait.image.info.width
+        # console.log cloudinaryId, width, portrait
+        {
+          w: width
+          h: portrait.image.info.height * ratio
+          src: $.cloudinary.image(cloudinaryId, width: width, crop: 'limit')[0].src
+        }
+
+      options = index: index
+
+      photoSwipe = new PhotoSwipe pswp, PhotoSwipeUI_Default, items, options
+      photoSwipe.init()
+
+
   @masonry = _.debounce ->
-    # $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
     $('.grid').masonry 'destroy'
     $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
-  , 20
-
-  # @masonry = ->
-  #   $('.grid').css 'width', '100%'
-  #   $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
-  #   console.log 'Masonry!'
-
-  # Template.gallery.onRendered ->
-  #   console.log 'masonry load'
-  #   $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
+  , 200
 
   Template.portrait.onRendered ->
     masonry()
@@ -129,27 +162,3 @@ if Meteor.isClient
         height: 0
       ,
         duration: 400
-
-  # Template.testimonials.rendered = ->
-  #   $('.testimonials').masonry({itemSelector: '.testimonial-wrapper', columnWidth: 400})
-
-  Template.photoswipe.rendered = ->
-    pswpElement = document.querySelectorAll('.pswp')[0]
-    # build items array
-    items = [
-      {
-        src: 'https://placekitten.com/600/400'
-        w: 600
-        h: 400
-      }
-      {
-        src: 'https://placekitten.com/1200/900'
-        w: 1200
-        h: 900
-      }
-    ]
-    # define options (if needed)
-    options = index: 0
-    # Initializes and opens PhotoSwipe
-    gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options)
-    gallery.init()

@@ -156,9 +156,10 @@ template(name='gallery')
     .gallery.grid
       each portraits
         +portrait(this)
+  +photoswipe
 
 template(name='portrait')
-  .portrait.grid-item(style="width: {{width}}px; height: {{height}}px;")
+  .portrait.grid-item(data-cloudinary-id="{{cloudinaryId}}", style="width: {{width}}px; height: {{height}}px;")
     img(src="{{imageLink}}")
 
 template(name='photoswipe')
