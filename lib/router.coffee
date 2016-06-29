@@ -8,7 +8,10 @@ FlowRouter.route '/gallery/:category',
     console.log 'flowaction'
     $('.gallery').removeClass('fadeIn')
     setTimeout ->
-      $('.gallery').addClass 'fadeIn'
+      masonry()
+      setTimeout ->
+        $('.gallery').addClass 'fadeIn'
+      , 400
     , 400
 
 

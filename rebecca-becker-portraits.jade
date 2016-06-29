@@ -17,7 +17,7 @@ template(name='nav')
   .side-nav-wrapper
     ul.side-nav
       li
-        a(href='/') Home
+        a(href='/#home') Home
       li.gallery-link
         a(href='/gallery/all') Gallery
       li
@@ -31,7 +31,7 @@ template(name='nav')
 
 
 template(name='content')
-  .text-center
+  .text-center#home
     +header
   +gallery_launcher
   .row#about
@@ -64,7 +64,7 @@ template(name='content')
       hr
   .row
     .col.col-md-12
-      h2.text-center Rebecca Becker, Atlanta Portrait Artist
+      h2.text-center Rebecca Becker, Atlanta Artist
   .row
     .col.col-md-12
       h2.text-center Telephone:
@@ -78,7 +78,7 @@ template(name='content')
       hr.dashed
   .row
     .col.col-md-12.text-center
-      .small Copyright 2009-2011 © Portraits by Rebecca Becker. All Rights Reserved.
+      .small Copyright 2009-2016 © Portraits by Rebecca Becker. All Rights Reserved.
       br
 
 
@@ -161,6 +161,9 @@ template(name='gallery')
 template(name='portrait')
   .portrait.grid-item(data-cloudinary-id="{{cloudinaryId}}", style="width: {{width}}px; height: {{height}}px;")
     img(src="{{imageLink}}")
+    if caption
+      .caption= caption
+
 
 template(name='photoswipe')
   // Root element of PhotoSwipe. Must have class pswp.

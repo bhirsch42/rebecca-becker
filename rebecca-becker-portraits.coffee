@@ -29,14 +29,14 @@ if Meteor.isClient
   #     e.preventDefault()
 
   Template.oil_prices.helpers
-    'prices': -> OilPrices.find({})
+    'prices': -> OilPrices.find({}, {sort: {'order': 1}})
 
   Template.pastel_prices.helpers
-    'prices': -> PastelPrices.find({})
+    'prices': -> PastelPrices.find({}, {sort: {'order': 1}})
 
   Template.testimonials.helpers
-    'testimonials_first': -> Testimonials.find({}).fetch()[..2]
-    'testimonials_rest': -> Testimonials.find({}).fetch()[3..]
+    'testimonials_first': -> Testimonials.find({}, {sort: {'order': 1}}).fetch()[..2]
+    'testimonials_rest': -> Testimonials.find({}, {sort: {'order': 1}}).fetch()[3..]
 
   Template.gallery_launcher.helpers
     'categories': ->
@@ -78,6 +78,7 @@ if Meteor.isClient
           width: width
           height: portrait.image.info.height * ratio
           imageLink: $.cloudinary.image(cloudinaryId, width: width, crop: 'scale')[0].src
+          caption: portrait.caption
         }
 
       # TESTING
@@ -112,6 +113,7 @@ if Meteor.isClient
       index = 0
       indexFound = false
       items = cursor.map (portrait) ->
+        width = portrait.image.info.width # Ignore width limit; Use original resolution
         cloudinaryId = cloudinaryIdFromUrl portrait.image.url
         console.log index, cloudinaryId
         if cloudinaryId == imageId
@@ -134,9 +136,10 @@ if Meteor.isClient
 
 
   @masonry = _.debounce ->
+    console.log 'MASONRY!'
     $('.grid').masonry 'destroy'
     $('.grid').masonry({itemSelector: '.grid-item', columnWidth: 300, isFitWidth: true})
-  , 200
+  , 400
 
   Template.portrait.onRendered ->
     masonry()
