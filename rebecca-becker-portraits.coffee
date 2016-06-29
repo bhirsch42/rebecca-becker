@@ -43,7 +43,7 @@ if Meteor.isClient
       categories().map (category) ->
         {
           category: category
-          cloudinaryId: cloudinaryIdFromUrl Portraits.findOne(category: category).image.url
+          cloudinaryId: cloudinaryIdFromUrl Portraits.findOne(category: category, {sort: {'order': 1}}).image.url
           galleryLink: _.escape(category).replace('/', '|||')
         }
 
