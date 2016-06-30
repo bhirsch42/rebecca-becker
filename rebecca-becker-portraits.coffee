@@ -20,9 +20,17 @@ if Meteor.isClient
     , 400
     console.log 'scrolltop boi'
 
-  Template.nav.onRendered ->
-    $('.nav-button').click ->
+  # Template.nav.onRendered ->
+  #   $('.nav-button').click ->
+  #     $('.side-nav-wrapper').toggleClass 'open'
+
+  Template.nav.events
+    'click .nav-button': ->
       $('.side-nav-wrapper').toggleClass 'open'
+    'click .side-nav-cover': ->
+      $('.side-nav-wrapper').removeClass 'open'
+    'click a': ->
+      $('.side-nav-wrapper').removeClass 'open'
 
   # Template.nav.events
   #   'click a': (e) ->
