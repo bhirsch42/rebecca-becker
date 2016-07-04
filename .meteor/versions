@@ -49,7 +49,6 @@ kadira:blaze-layout@2.3.0
 kadira:flow-router@2.12.1
 launch-screen@1.0.12
 lepozepo:cloudinary@4.2.2
-lepozepo:s3@5.1.10
 less@2.6.3_1
 livedata@1.0.18
 localstorage@1.0.11
@@ -94,7 +93,6 @@ orionjs:dictionary@1.8.0
 orionjs:filesystem@1.8.0
 orionjs:image-attribute@1.8.0
 orionjs:lang-en@1.8.0
-orionjs:s3@1.8.0
 orionjs:summernote@1.8.0
 percolate:velocityjs@1.2.1_1
 promise@0.7.2_1

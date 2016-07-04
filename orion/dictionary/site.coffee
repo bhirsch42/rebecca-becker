@@ -10,6 +10,12 @@ orion.dictionary.addDefinition 'portrait_process', 'site',
   autoform:
     type: 'textarea'
 
+orion.dictionary.addDefinition 'categories', 'site',
+  type: String
+  label: 'Categories (comma separated)'
+  autoform:
+    type: 'textarea'
+
 @OilPrices = new orion.collection 'oil_prices',
   singularName: 'custom oil portrait price'
   pluralName: 'custom oil portrait prices'
