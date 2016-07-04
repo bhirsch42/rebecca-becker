@@ -1,12 +1,15 @@
 if Meteor.isClient
   @categories = null
   @categories = ->
+    # Extract categories from Portrait colleciton
     # if categories
     #   return categories
     # categories = {}
     # Portraits.find({}).forEach (portrait) ->
     #   categories[portrait.category] = 1
     # categories = (key for key of categories)
+
+    # Parse categories from orion dictionary
     orion.dictionary.get('site.categories').split(',')
 
   @cloudinaryIdFromUrl = (url) ->
@@ -20,21 +23,14 @@ if Meteor.isClient
         easing: 'ease-in-out'
     , 400
 
-  # Template.nav.onRendered ->
-  #   $('.nav-button').click ->
-  #     $('.side-nav-wrapper').toggleClass 'open'
-
-  Template.nav.events
-    'click .nav-button': ->
+  # Workaround because click events on mobile Safari are weird
+  Template.nav.onRendered ->
+    $('.nav-button').click ->
       $('.side-nav-wrapper').toggleClass 'open'
-    'click .side-nav-cover': ->
+    $('.side-nav-cover').click ->
       $('.side-nav-wrapper').removeClass 'open'
-    'click a': ->
+    $('a').click ->
       $('.side-nav-wrapper').removeClass 'open'
-
-  # Template.nav.events
-  #   'click a': (e) ->
-  #     e.preventDefault()
 
   Template.oil_prices.helpers
     'prices': -> OilPrices.find({}, {sort: {'order': 1}})
@@ -93,17 +89,6 @@ if Meteor.isClient
           caption: portrait.caption
         }
 
-      # TESTING
-      # width = 270
-      # Portraits.find({}).map (portrait) ->
-      #   cloudinaryId = cloudinaryIdFromUrl portrait.image.url
-      #   ratio = width / portrait.image.info.width
-      #   {
-      #     width: width
-      #     height: portrait.image.info.height * ratio
-      #     imageLink: $.cloudinary.image(cloudinaryId, width: width, crop: 'scale')[0].src
-      #   }
-
   Template.gallery.onRendered ->
     $('.gallery').addClass 'fadeIn'
 
@@ -150,7 +135,6 @@ if Meteor.isClient
 
   Template.portrait.onRendered ->
     masonry()
-
 
   Template.testimonials.events
     'click #more-testimonials': (e) ->
