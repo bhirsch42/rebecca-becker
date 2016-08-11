@@ -1,4 +1,20 @@
+if Meteor.isServer
+  Meteor.publish 'oil_prices', ->
+    OilPrices.find()
+  Meteor.publish 'pastel_prices', ->
+    PastelPrices.find()
+  Meteor.publish 'testimonials', ->
+    Testimonials.find()
+  Meteor.publish 'portraits', ->
+    Portraits.find()
+
 if Meteor.isClient
+  Meteor.subscribe('oil_prices')
+  Meteor.subscribe('pastel_prices')
+  Meteor.subscribe('testimonials')
+  Meteor.subscribe('portraits')
+
+
   @categories = null
   @categories = ->
     # Extract categories from Portrait colleciton
